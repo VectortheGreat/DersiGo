@@ -1,5 +1,5 @@
 import UserContainer from "@/containers/user-page/UserContainer";
-import React from "react";
+import "@/app/globals.css";
 
 const UsersPage = () => {
   return (
