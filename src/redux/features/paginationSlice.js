@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  page: 1,
+  page: 0,
   limit: 20,
 };
 
@@ -9,8 +9,11 @@ const paginationSlice = createSlice({
   name: "pagination",
   initialState,
   reducers: {
-    setPage: (state, action) => {
-      state.page = action.payload;
+    selectPageValue: (state, action) => {
+      state.page = parseInt(action.payload) - 1;
+    },
+    changePageValue: (state, action) => {
+      state.page += action.payload;
     },
     setLimit: (state, action) => {
       state.limit = action.payload;
@@ -18,6 +21,6 @@ const paginationSlice = createSlice({
   },
 });
 
-export const { setPage, setLimit } = paginationSlice.actions;
+export const { selectPageValue, changePageValue, setLimit } = paginationSlice.actions;
 
 export default paginationSlice.reducer;

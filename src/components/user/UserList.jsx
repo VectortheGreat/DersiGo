@@ -1,6 +1,6 @@
 "use client";
 import { setUsers } from "@/redux/features/userSlice";
-import { fetchUsers } from "@/services/UserService";
+import { fetchAllUsers, fetchUsers } from "@/services/UserService";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
@@ -15,8 +15,11 @@ const UserList = () => {
     try {
       const data = await fetchUsers(page, limit);
       dispatch(setUsers(data));
+      const data2 = await fetchAllUsers(50);
+      console.log(data2);
     } catch (error) {
       console.error(error);
+      throw error;
     }
   };
 
@@ -28,18 +31,12 @@ const UserList = () => {
     <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
       <td className="px-6 py-4">
         <Link href={`/user/${user.id}`}>
-          <Image
-            src={user.picture}
-            alt={user.firstName}
-            width={50}
-            height={50}
-            className="rounded-full cursor-pointer"
-          />
+          <Image src={user.picture} alt={user.firstName} width={50} height={50} className="rounded-full" />
         </Link>
       </td>
       <th
         scope="row"
-        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white cursor-pointer hover:text-sky-600"
+        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white hover:text-sky-600"
       >
         <Link href={`/user/${user.id}`}>
           {user.firstName} {user.lastName}
@@ -47,9 +44,7 @@ const UserList = () => {
       </th>
       <td className="px-6 py-4">{user.title}</td>
       <td className="px-6 py-4 text-right">
-        <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-          Edit
-        </a>
+        <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
       </td>
     </tr>
   ));

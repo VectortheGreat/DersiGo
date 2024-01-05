@@ -1,43 +1,47 @@
 "use client";
-import { toggleUserEditModal } from "@/redux/features/modalSlice";
+import { toggleUserEditModal, toggleWarningModal } from "@/redux/features/modalSlice";
 import { createUser, updateUser } from "@/services/UserService";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ModalInput from "./modal-inputs/ModalInput";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { toast } from "react-toastify";
+import WarningModal from "./WarningModal";
 
 const EditUserModal = ({ userDetail }) => {
-  const [toggleWarningModal, setToggleWarningModal] = useState(false);
+  const warningModal = useSelector((state) => state.modal.warningModal);
   const dispatch = useDispatch();
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathName = usePathname();
   const userModalQuery = searchParams.get("userModal");
+  const [userInfo, setUserInfo] = useState({
+    title: "",
+    firstName: "",
+    lastName: "",
+    gender: "",
+    email: "",
+    dateOfBirth: "",
+    phone: "",
+    picture: "",
+  });
+  useEffect(() => {
+    if (userModalQuery === "update") {
+      setUserInfo((prev) => ({
+        ...prev,
+        title: userDetail.title,
+        firstName: userDetail.firstName,
+        lastName: userDetail.lastName,
+        gender: userDetail.gender,
+        email: userDetail.email,
+        dateOfBirth: userDetail.dateOfBirth.split("T")[0],
+        phone: userDetail.phone,
+        picture: userDetail.picture,
+      }));
+    }
+  }, [userModalQuery, userDetail]);
 
-  const [userInfo, setUserInfo] = useState(
-    userModalQuery === "update"
-      ? {
-          title: userDetail.title,
-          firstName: userDetail.firstName,
-          lastName: userDetail.lastName,
-          gender: userDetail.gender,
-          email: userDetail.email,
-          dateOfBirth: userDetail.dateOfBirth.split("T")[0],
-          phone: userDetail.phone,
-          picture: userDetail.picture,
-        }
-      : {
-          title: "",
-          firstName: "",
-          lastName: "",
-          gender: "",
-          email: "",
-          dateOfBirth: "",
-          phone: "",
-          picture: "",
-        }
-  );
   const closeModal = () => {
     dispatch(toggleUserEditModal());
     setUserInfo({
@@ -72,6 +76,16 @@ const EditUserModal = ({ userDetail }) => {
           userInfo.picture,
           userInfo.dateOfBirth
         );
+        toast.success("The user created successfully", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       } else if (userModalQuery === "update") {
         await updateUser(
           userDetail.id,
@@ -83,22 +97,40 @@ const EditUserModal = ({ userDetail }) => {
           userInfo.picture,
           userInfo.dateOfBirth
         );
+        toast.success("The user updated successfully", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       } else {
         throw new Error("userModalQuery is not defined");
       }
       closeModal();
     } catch (error) {
       console.error(error);
+      Object.values(error.response.data.data).forEach((value) => {
+        toast.error(value, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
     }
   };
   return (
     <>
-      {toggleWarningModal ? (
-        // <WarningModal
-        //   deleteFromFirestore={deleteFromFirestore}
-        //   setToggleWarningModal={setToggleWarningModal}
-        // ></WarningModal>
-        <div>sa</div>
+      {warningModal ? (
+        <WarningModal userId={userDetail.id} />
       ) : (
         <div
           id="authentication-modal"
@@ -112,13 +144,13 @@ const EditUserModal = ({ userDetail }) => {
               {/* Modal header */}
               <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  <span>Edit User Informations</span>
+                  {userModalQuery === "create" ? <span>Create A New User</span> : <span>Edit User Informations</span>}
                 </h1>
                 <div className="flex items-center space-x-1">
                   <FaRegTrashAlt
                     className="cursor-pointer end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ms-auto dark:hover:bg-gray-600 dark:hover:text-white duration-300"
                     size={20}
-                    onClick={() => setToggleWarningModal(true)}
+                    onClick={() => dispatch(toggleWarningModal())}
                   ></FaRegTrashAlt>
                   <button
                     onClick={closeModal}
@@ -169,7 +201,7 @@ const EditUserModal = ({ userDetail }) => {
                         clipRule="evenodd"
                       ></path>
                     </svg>
-                    Kaydet
+                    Submit
                   </button>
                 </div>
               </form>
