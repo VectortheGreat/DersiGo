@@ -1,18 +1,29 @@
 "use client";
-import { toggleWarningModal } from "@/redux/features/modalSlice";
+import { togglePostEditModal, toggleUserEditModal, toggleWarningModal } from "@/redux/features/modalSlice";
+import { deletePost } from "@/services/PostService";
 import { deleteUser } from "@/services/UserService";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
 const WarningModal = ({ userId }) => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const path = usePathname();
+  const pathName = path.split("/")[1];
   const deleteFunc = async () => {
     try {
-      await deleteUser(userId);
+      if (pathName === "user") {
+        await deleteUser(userId);
+        dispatch(toggleUserEditModal());
+      } else if (pathName === "post") {
+        await deletePost(userId);
+        dispatch(togglePostEditModal());
+      } else {
+        throw new Error("Invalid Pathname");
+      }
       dispatch(toggleWarningModal());
-      toast.success("The user deleted successfully", {
+      toast.success(`The ${pathName} deleted successfully`, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -22,7 +33,7 @@ const WarningModal = ({ userId }) => {
         progress: undefined,
         theme: "light",
       });
-      router.push("/users");
+      router.push(`/${pathName}s`);
     } catch (error) {
       console.error(error);
       toast.error(error.response.data.error, {
@@ -44,7 +55,9 @@ const WarningModal = ({ userId }) => {
         <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
           {/* Modal header */}
           <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Oyunu silmek istediğine emin misin?</h3>
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+              Are you sure about to delete the post?
+            </h3>
           </div>
           {/* Modal body */}
 
@@ -55,7 +68,7 @@ const WarningModal = ({ userId }) => {
                 className="text-white inline-flex items-center bg-rose-700 hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-rose-600 dark:hover:bg-rose-700 dark:focus:ring-rose-800"
                 onClick={deleteFunc}
               >
-                Evet
+                Yes
               </button>
 
               <button
@@ -63,7 +76,7 @@ const WarningModal = ({ userId }) => {
                 className="text-white inline-flex items-center bg-gray-500 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-gray-400 dark:hover:bg-gray-500 dark:focus:ring-gray-700"
                 onClick={() => dispatch(toggleWarningModal())}
               >
-                Hayır
+                No
               </button>
             </div>
           </div>

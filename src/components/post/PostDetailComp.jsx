@@ -61,12 +61,14 @@ const PostDetailComp = ({ postDetail }) => {
               {publishDate} / {publishHour}
             </span>
           </p>
-          <p>
-            <span className="font-bold">Link: </span>
-            <Link href={postDetail.link} className="text-gray-400 hover:text-sky-600" target="_blank">
-              {postDetail.link}
-            </Link>
-          </p>
+          {postDetail?.link && (
+            <p>
+              <span className="font-bold">Link: </span>
+              <Link href={postDetail.link} className="text-gray-400 hover:text-sky-600" target="_blank">
+                {postDetail.link}
+              </Link>
+            </p>
+          )}
         </div>
       </div>
     </div>

@@ -44,6 +44,7 @@ const PostList = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, limit, searchParams]);
+  console.log(posts);
 
   return posts?.data?.map((post, index) => (
     <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">

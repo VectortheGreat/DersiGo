@@ -54,40 +54,29 @@ export const deletePost = async (userId) => {
   return res.data;
 };
 
-export const updatePost = async (userId, firstName, lastName, phone, gender, title, picture, dateOfBirth) => {
-  try {
-    const res = await axios.put(
-      `${baseUrl}/post/${userId}`,
-      {
-        title,
-        firstName,
-        lastName,
-        picture,
-        phone,
-        gender,
-        dateOfBirth,
-      },
-      { headers }
-    );
-    return res.data;
-  } catch (error) {
-    console.error(error);
-  }
+export const updatePost = async (userId, image, likes, text, tags) => {
+  const res = await axios.put(
+    `${baseUrl}/post/${userId}`,
+    {
+      image,
+      likes,
+      text,
+      tags,
+    },
+    { headers }
+  );
+  return res.data;
 };
 
-export const createPost = async (firstName, lastName, email, phone, gender, title, picture, dateOfBirth) => {
-  //* firsName, lastName and email are required
+export const createPost = async (image, likes, text, tags, owner) => {
   const res = await axios.post(
     `${baseUrl}/post/create`,
     {
-      title,
-      firstName,
-      lastName,
-      email,
-      picture,
-      phone,
-      gender,
-      dateOfBirth,
+      image,
+      likes,
+      text,
+      tags,
+      owner,
     },
     { headers }
   );

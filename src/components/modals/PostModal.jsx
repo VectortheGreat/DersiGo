@@ -6,6 +6,7 @@ import { createPost, updatePost } from "@/services/PostService";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import PostModalInput from "./modal-inputs/PostModalInput";
+import { toast } from "react-toastify";
 
 const PostModal = ({ postDetail }) => {
   const warningModal = useSelector((state) => state.modal.warningModal);
@@ -16,7 +17,7 @@ const PostModal = ({ postDetail }) => {
   const postModalQuery = searchParams.get("postModal");
   const [postInfo, setPostInfo] = useState({
     image: "",
-    likes: "",
+    likes: 0,
     owner: "",
     text: "",
     tags: "",
@@ -56,14 +57,11 @@ const PostModal = ({ postDetail }) => {
     try {
       if (postModalQuery === "create") {
         await createPost(
-          postInfo.firstName,
-          postInfo.lastName,
-          postInfo.email,
-          postInfo.phone,
-          postInfo.gender,
-          postInfo.title,
-          postInfo.picture,
-          postInfo.dateOfBirth
+          postInfo.image,
+          postInfo.likes,
+          postInfo.text,
+          postInfo && Array.isArray(postInfo.tags) ? postInfo.tags : postInfo.tags.split(","),
+          postInfo.owner
         );
         toast.success("The post created successfully", {
           position: "top-right",
@@ -76,7 +74,13 @@ const PostModal = ({ postDetail }) => {
           theme: "light",
         });
       } else if (postModalQuery === "update") {
-        await updatePost(postDetail.id, postInfo.image, postInfo.likes, postInfo.owner, postInfo.text, postInfo.tags);
+        await updatePost(
+          postDetail.id,
+          postInfo.image,
+          postInfo.likes,
+          postInfo.text,
+          postInfo && Array.isArray(postInfo.tags) ? postInfo.tags : postInfo.tags.split(",")
+        );
         toast.success("The post updated successfully", {
           position: "top-right",
           autoClose: 5000,
@@ -93,21 +97,19 @@ const PostModal = ({ postDetail }) => {
       closeModal();
     } catch (error) {
       console.error(error);
-      Object.values(error.response.data.data).forEach((value) => {
-        toast.error(value, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+      toast.error(error.response.data.error, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
       });
     }
   };
-  console.log(postInfo.tags); //TODO remove this line
+
   return (
     <>
       {warningModal ? (
@@ -125,7 +127,7 @@ const PostModal = ({ postDetail }) => {
               {/* Modal header */}
               <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  {postModalQuery === "create" ? <span>Create A New User</span> : <span>Edit User Informations</span>}
+                  {postModalQuery === "create" ? <span>Create A New Post</span> : <span>Edit Post Informations</span>}
                 </h1>
                 <div className="flex items-center space-x-1">
                   <FaRegTrashAlt

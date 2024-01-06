@@ -1,22 +1,28 @@
 "use client";
-import { toggleUserEditModal } from "@/redux/features/modalSlice";
+import { togglePostEditModal, toggleUserEditModal } from "@/redux/features/modalSlice";
 import { IoPersonAddOutline } from "react-icons/io5";
+import { BiMessageAdd } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
-import EditUserModal from "./modals/EditUserModal";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import PostModal from "./modals/PostModal";
 
 const CaptionComp = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const path = usePathname();
   const pathName = path.split("/")[1];
-  const userModal = useSelector((state) => state.modal.userEditModal);
+  const modal = useSelector((state) => state.modal.postEditModal);
   const page = useSelector((state) => state.pagination.page);
   const limit = useSelector((state) => state.pagination.limit);
   const openModal = () => {
-    dispatch(toggleUserEditModal());
-    router.push("?userModal=create");
+    if (pathName === "users") {
+      dispatch(toggleUserEditModal());
+      router.push("?userModal=create");
+    } else if (pathName === "posts") {
+      dispatch(togglePostEditModal());
+      router.push("?postModal=create");
+    }
   };
   const [searchInput, setSearchInput] = useState("");
   const submitSearch = (e) => {
@@ -26,13 +32,17 @@ const CaptionComp = () => {
 
   return (
     <div className="flex justify-between">
-      {userModal && <EditUserModal />}
+      {modal && <PostModal />}
       <div>
         <span>All {pathName}</span>
         <p className="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">All {pathName} from Database</p>
       </div>
       <div className="flex space-x-4 items-center">
-        <IoPersonAddOutline className="w-8 h-8 hover:text-sky-800 duration-300 cursor-pointer" onClick={openModal} />
+        {pathName === "posts" ? (
+          <BiMessageAdd className="w-8 h-8 hover:text-sky-800 duration-300 cursor-pointer" onClick={openModal} />
+        ) : (
+          <IoPersonAddOutline className="w-8 h-8 hover:text-sky-800 duration-300 cursor-pointer" onClick={openModal} />
+        )}
         <form onSubmit={(e) => submitSearch(e)}>
           <div className="relative">
             <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
