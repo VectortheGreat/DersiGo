@@ -1,7 +1,11 @@
-import React from "react";
+import PostContainer from "@/containers/post-page/PostContainer";
 
 const PostsPage = () => {
-  return <div>PostsPage</div>;
+  return (
+    <div>
+      <PostContainer />
+    </div>
+  );
 };
 
 export default PostsPage;

@@ -8,12 +8,19 @@ const PageComp = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const searchParams = useSearchParams();
+  const searchQueryParams = searchParams.get("search");
   const pageParams = searchParams.get("page");
   const page = useSelector((state) => state.pagination.page);
   const limit = useSelector((state) => state.pagination.limit);
   const users = useSelector((state) => state.user.users);
   const maxPage = Math.ceil(users?.total / limit);
-  const lastPageQuery = parseInt(pageParams) - maxPage;
+  const lastPageQuery = page + 1 - maxPage;
+  // console.log("users", users);
+  // console.log("limit", limit);
+  // console.log("page", page);
+  // console.log("maxPage", maxPage);
+  // console.log("lastPageQuery", lastPageQuery);
+  // console.log("pageParams", pageParams);
 
   const changePage = (e) => {
     if (e.target.getAttribute("name") === "number") {
@@ -46,7 +53,10 @@ const PageComp = () => {
     );
   }
   useEffect(() => {
-    router.push(`?page=${page + 1}&limit=${limit}`, { scroll: false });
+    const pageUrl = searchQueryParams
+      ? `?page=${page + 1}&limit=${limit}&search=${searchQueryParams}`
+      : `?page=${page + 1}&limit=${limit}`;
+    router.push(pageUrl, { scroll: false });
   }, [page]);
 
   return (

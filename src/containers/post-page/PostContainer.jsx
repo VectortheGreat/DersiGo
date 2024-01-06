@@ -1,9 +1,9 @@
 import CaptionComp from "@/components/CaptionComp";
 import LimitComp from "@/components/paging/LimitComp";
 import PageComp from "@/components/paging/PageComp";
-import UserList from "@/components/user/UserList";
+import PostList from "@/components/post/PostList";
 
-const UserContainer = () => {
+const PostContainer = () => {
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -25,7 +25,7 @@ const UserContainer = () => {
           </tr>
         </thead>
         <tbody>
-          <UserList />
+          <PostList />
         </tbody>
       </table>
       <div className="flex justify-between p-2">
@@ -36,4 +36,4 @@ const UserContainer = () => {
   );
 };
 
-export default UserContainer;
+export default PostContainer;

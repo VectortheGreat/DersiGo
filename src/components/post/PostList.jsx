@@ -1,40 +1,35 @@
 "use client";
 import { setLimit } from "@/redux/features/paginationSlice";
-import { setUsers } from "@/redux/features/userSlice";
-import { fetchAllUsers, fetchUsers } from "@/services/UserService";
+import { setPosts } from "@/redux/features/postSlice";
+import { fetchAllPosts, fetchPosts } from "@/services/PostService";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-const UserList = () => {
+const PostList = () => {
   const dispatch = useDispatch();
-  const users = useSelector((state) => state.user.users);
+  const posts = useSelector((state) => state.post.posts);
   const page = useSelector((state) => state.pagination.page);
   const limit = useSelector((state) => state.pagination.limit);
   const searchParams = useSearchParams();
   const searchParamQuery = searchParams.get("search");
   const fetchData = async () => {
     try {
-      const data = await fetchUsers(page, limit);
-      dispatch(setUsers(data));
+      const data = await fetchPosts(page, limit);
+      dispatch(setPosts(data));
     } catch (error) {
       console.error(error);
       throw error;
     }
   };
-  const fetchAllUserData = async () => {
+  const fetchAllPostData = async () => {
     try {
-      const data = await fetchAllUsers();
-      const filterSearch = data.filter(
-        (user) =>
-          user.firstName.toLowerCase().includes(searchParamQuery.toLowerCase()) ||
-          user.lastName.toLowerCase().includes(searchParamQuery.toLowerCase())
-      );
-
+      const data = await fetchAllPosts();
+      const filterSearch = data.filter((user) => user.text.toLowerCase().includes(searchParamQuery.toLowerCase()));
       dispatch(setLimit(50));
-      dispatch(setUsers({ data: filterSearch, total: filterSearch.length }));
+      dispatch(setPosts({ data: filterSearch, total: filterSearch.length }));
     } catch (error) {
       console.error(error);
       throw error;
@@ -43,34 +38,45 @@ const UserList = () => {
 
   useEffect(() => {
     if (searchParamQuery) {
-      fetchAllUserData();
+      fetchAllPostData();
     } else {
       fetchData();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, limit, searchParams]);
 
-  return users?.data?.map((user, index) => (
+  return posts?.data?.map((post, index) => (
     <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
       <td className="px-6 py-4">
-        <Link href={`/user/${user.id}`}>
-          <Image src={user.picture} alt={user.firstName} width={50} height={50} className="rounded-full" />
+        <Link href={`/post/${post.id}`}>
+          <Image
+            src={post.image}
+            alt={post.text}
+            width={50}
+            height={50}
+            className="object-cover w-12 h-12 rounded-full"
+          />
         </Link>
       </td>
       <th
         scope="row"
         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white hover:text-sky-600"
       >
-        <Link href={`/user/${user.id}`}>
-          {user.firstName} {user.lastName}
-        </Link>
+        <Link href={`/post/${post.id}`}>{post.text}</Link>
       </th>
-      <td className="px-6 py-4">{user.title}</td>
+      <td className="px-6 py-4">{post.likes}</td>
       <td className="px-6 py-4 text-right">
-        <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
+        {post.tags.map((tag, index) => (
+          <span
+            key={index}
+            className="inline-flex mx-1 items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sky-100 text-sky-800"
+          >
+            {tag}
+          </span>
+        ))}
       </td>
     </tr>
   ));
 };
 
-export default UserList;
+export default PostList;

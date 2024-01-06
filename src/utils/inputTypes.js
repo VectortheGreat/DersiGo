@@ -65,3 +65,52 @@ export const inputTypes = [
     required: false,
   },
 ];
+
+export const postInputTypes = [
+  {
+    type: "text",
+    name: "image",
+    id: "image",
+    placeholder: "Image Url",
+    label: "Image",
+    col: 1,
+    required: true,
+  },
+
+  {
+    type: "text",
+    name: "text",
+    id: "text",
+    placeholder: "Post Text",
+    label: "Text",
+    col: 1,
+    required: false,
+  },
+  {
+    type: "text",
+    name: "tags",
+    id: "tags",
+    placeholder: "Dog,Cat,Bird",
+    label: "Tags",
+    col: 1,
+    required: false,
+  },
+  {
+    type: "number",
+    name: "likes",
+    id: "likes",
+    placeholder: "Number of Likes",
+    label: "Likes",
+    col: 2,
+    required: false,
+  },
+  {
+    type: "select",
+    name: "owner",
+    id: "owner",
+    placeholder: "Post Owner",
+    label: "Owner",
+    col: 2,
+    required: false,
+  },
+];

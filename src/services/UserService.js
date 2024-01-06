@@ -1,4 +1,4 @@
-import axios, { all } from "axios";
+import axios from "axios";
 const baseUrl = "https://dummyapi.io/data/v1";
 
 const headers = {
@@ -23,27 +23,19 @@ export const fetchUsers = async (page, limit) => {
 export const fetchAllUsers = async (limit = 50) => {
   try {
     let allUsers = [];
-    let page = 1;
-
+    let page = 0;
     while (true) {
       const params = { page, limit };
       const res = await axios.get(`${baseUrl}/user`, { headers, params });
-
-      // Eğer sayfa boşsa veya kullanıcı kalmadıysa döngüyü sonlandır
-      if (!res.data || res.data.length === 0) {
+      if (!res.data.data || res.data.data.length === 0) {
         break;
       }
-
-      // Kullanıcıları genel listeye ekle
-      allUsers = allUsers.concat(res.data);
-
-      // Bir sonraki sayfaya geç
+      allUsers = allUsers.concat(res.data.data);
       page++;
     }
-    console.log(allUsers);
     return allUsers;
   } catch (error) {
-    console.error("HATA: ", error);
+    console.error(error);
   }
 };
 
