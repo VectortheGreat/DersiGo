@@ -15,6 +15,7 @@ const CaptionComp = () => {
   const modal = useSelector((state) => state.modal.postEditModal);
   const page = useSelector((state) => state.pagination.page);
   const limit = useSelector((state) => state.pagination.limit);
+  const [searchSubject, setSearchSubject] = useState("tag");
   const openModal = () => {
     if (pathName === "users") {
       dispatch(toggleUserEditModal());
@@ -27,7 +28,7 @@ const CaptionComp = () => {
   const [searchInput, setSearchInput] = useState("");
   const submitSearch = (e) => {
     e.preventDefault();
-    router.push(`?page=${page + 1}&limit=${limit}&search=${searchInput}`, { scroll: false });
+    router.push(`?page=${page + 1}&limit=${limit}&search=${searchInput}&subject=${searchSubject}`, { scroll: false });
   };
 
   return (
@@ -43,7 +44,18 @@ const CaptionComp = () => {
         ) : (
           <IoPersonAddOutline className="w-8 h-8 hover:text-sky-800 duration-300 cursor-pointer" onClick={openModal} />
         )}
-        <form onSubmit={(e) => submitSearch(e)}>
+        <form className="flex" onSubmit={(e) => submitSearch(e)}>
+          {pathName === "posts" && (
+            <select
+              id="subject"
+              value={searchSubject}
+              onChange={(e) => setSearchSubject(e.target.value)}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-s-lg border-s-gray-100 dark:border-s-gray-700 border-s-2 focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            >
+              <option value="post">Post</option>
+              <option value="tag">Tag</option>
+            </select>
+          )}
           <div className="relative">
             <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
               <svg
@@ -65,7 +77,7 @@ const CaptionComp = () => {
             <input
               type="search"
               id="default-search"
-              className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-e-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder={`Search ${pathName}`}
               onChange={(e) => setSearchInput(e.target.value)}
               required

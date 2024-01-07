@@ -1,7 +1,7 @@
 "use client";
 import { setLimit } from "@/redux/features/paginationSlice";
 import { setPosts } from "@/redux/features/postSlice";
-import { fetchAllPosts, fetchPosts } from "@/services/PostService";
+import { fetchAllPosts, fetchPostByTag, fetchPosts } from "@/services/PostService";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -15,6 +15,7 @@ const PostList = () => {
   const limit = useSelector((state) => state.pagination.limit);
   const searchParams = useSearchParams();
   const searchParamQuery = searchParams.get("search");
+  const subjectParamQuery = searchParams.get("subject");
   const fetchData = async () => {
     try {
       const data = await fetchPosts(page, limit);
@@ -26,10 +27,17 @@ const PostList = () => {
   };
   const fetchAllPostData = async () => {
     try {
-      const data = await fetchAllPosts();
-      const filterSearch = data.filter((user) => user.text.toLowerCase().includes(searchParamQuery.toLowerCase()));
-      dispatch(setLimit(50));
-      dispatch(setPosts({ data: filterSearch, total: filterSearch.length }));
+      if (subjectParamQuery === "post") {
+        const data = await fetchAllPosts();
+        const lowerCaseSearchQuery = searchParamQuery.toLowerCase();
+        const filterSearch = data.filter((post) => post.text.toLowerCase().includes(lowerCaseSearchQuery));
+        dispatch(setLimit(50));
+        dispatch(setPosts({ data: filterSearch, total: filterSearch.length }));
+      } else if (subjectParamQuery === "tag") {
+        const data = await fetchPostByTag(searchParamQuery, page);
+        dispatch(setLimit(50));
+        dispatch(setPosts({ data: data.data, total: data.total }));
+      }
     } catch (error) {
       console.error(error);
       throw error;
@@ -44,7 +52,6 @@ const PostList = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, limit, searchParams]);
-  console.log(posts);
 
   return posts?.data?.map((post, index) => (
     <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">

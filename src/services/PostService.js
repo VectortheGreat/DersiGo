@@ -21,6 +21,38 @@ export const fetchPosts = async (page, limit) => {
   }
 };
 
+export const fetchPostByTag = async (tagName, page) => {
+  try {
+    const params = {};
+    if (page) {
+      params.page = page;
+    }
+    const res = await axios.get(`${baseUrl}/tag/${tagName}/post?limit=50`, { headers, params });
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const fetchPostByUser = async (userId, limit = 50) => {
+  try {
+    let allPosts = [];
+    let page = 0;
+    while (true) {
+      const params = { page, limit };
+      const res = await axios.get(`${baseUrl}/user/${userId}/post`, { headers, params });
+      if (!res.data.data || res.data.data.length === 0) {
+        break;
+      }
+      allPosts = allPosts.concat(res.data.data);
+      page++;
+    }
+    return allPosts;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const fetchAllPosts = async (limit = 50) => {
   try {
     let allPosts = [];

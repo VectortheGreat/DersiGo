@@ -1,27 +1,34 @@
 "use client";
 import { changePageValue, selectPageValue } from "@/redux/features/paginationSlice";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const PageComp = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const searchParams = useSearchParams();
+  const path = usePathname();
+  const pathName = path.split("/")[1];
   const searchQueryParams = searchParams.get("search");
+  const subjectQueryParams = searchParams.get("subject");
   const pageParams = searchParams.get("page");
   const page = useSelector((state) => state.pagination.page);
   const limit = useSelector((state) => state.pagination.limit);
   const users = useSelector((state) => state.user.users);
-  const maxPage = Math.ceil(users?.total / limit);
-  const lastPageQuery = page + 1 - maxPage;
-  // console.log("users", users);
-  // console.log("limit", limit);
-  // console.log("page", page);
-  // console.log("maxPage", maxPage);
-  // console.log("lastPageQuery", lastPageQuery);
-  // console.log("pageParams", pageParams);
+  const posts = useSelector((state) => state.post.posts);
+  const [maxPage, setMaxPage] = useState(0);
+  const [lastPageQuery, setLastPageQuery] = useState(0);
 
+  useEffect(() => {
+    if (pathName === "users") {
+      setMaxPage(Math.ceil(users?.total / limit));
+      setLastPageQuery(page + 1 - maxPage);
+    } else if (pathName === "posts") {
+      setMaxPage(Math.ceil(posts?.total / limit));
+      setLastPageQuery(page + 1 - maxPage);
+    }
+  }, [pathName, posts, users]);
   const changePage = (e) => {
     if (e.target.getAttribute("name") === "number") {
       dispatch(selectPageValue(e.target.textContent));
@@ -35,7 +42,10 @@ const PageComp = () => {
   };
 
   const pages = [];
-  for (let i = 1; i <= maxPage; i++) {
+  const maxPagesToShow = 5;
+  const start = Math.max(1, page - Math.floor(maxPagesToShow / 2));
+  const end = Math.min(maxPage, start + maxPagesToShow - 1);
+  for (let i = start; i <= end; i++) {
     pages.push(
       <li name="number" key={i}>
         <span
@@ -54,7 +64,7 @@ const PageComp = () => {
   }
   useEffect(() => {
     const pageUrl = searchQueryParams
-      ? `?page=${page + 1}&limit=${limit}&search=${searchQueryParams}`
+      ? `?page=${page + 1}&limit=${limit}&search=${searchQueryParams}&subject=${subjectQueryParams}`
       : `?page=${page + 1}&limit=${limit}`;
     router.push(pageUrl, { scroll: false });
   }, [page]);
