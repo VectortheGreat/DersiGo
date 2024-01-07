@@ -67,7 +67,7 @@ const PageComp = () => {
       ? `?page=${page + 1}&limit=${limit}&search=${searchQueryParams}&subject=${subjectQueryParams}`
       : `?page=${page + 1}&limit=${limit}`;
     router.push(pageUrl, { scroll: false });
-  }, [page]);
+  }, [page, limit, router, searchQueryParams, subjectQueryParams]);
 
   return (
     <nav className="space-x-3">

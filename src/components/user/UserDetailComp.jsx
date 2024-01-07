@@ -99,7 +99,7 @@ const UserDetailComp = ({ userDetail }) => {
       {userPosts.length !== 0 && (
         <div>
           <h1>
-            {userDetail.firstName} {userDetail.lastName}'s Posts
+            {userDetail.firstName} {userDetail.lastName} s Posts
           </h1>
           <UserDetailPostTable userPosts={userPosts} />
         </div>

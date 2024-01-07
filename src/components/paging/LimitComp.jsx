@@ -22,7 +22,7 @@ const LimitComp = () => {
       ? `?page=${page + 1}&limit=${limit}&search=${searchQueryParams}`
       : `?page=${page + 1}&limit=${limit}`;
     router.push(pageUrl, { scroll: false });
-  }, [limit]);
+  }, [limit, page, router, searchQueryParams]);
 
   if (searchQueryParams) {
     return <div></div>;
