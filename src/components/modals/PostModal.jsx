@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import PostModalInput from "./modal-inputs/PostModalInput";
 import { toast } from "react-toastify";
 
-const PostModal = ({ postDetail }) => {
+const PostModal = ({ postDetail, onSubmitSuccess }) => {
   const warningModal = useSelector((state) => state.modal.warningModal);
   const dispatch = useDispatch();
   const router = useRouter();
@@ -91,6 +91,7 @@ const PostModal = ({ postDetail }) => {
           progress: undefined,
           theme: "light",
         });
+        onSubmitSuccess();
       } else {
         throw new Error("postModalQuery is not defined");
       }

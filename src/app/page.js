@@ -1,3 +1,9 @@
+import HomeContainer from "@/containers/home/HomeContainer";
+
 export default function Home() {
-  return <main>sa</main>;
+  return (
+    <main>
+      <HomeContainer />
+    </main>
+  );
 }

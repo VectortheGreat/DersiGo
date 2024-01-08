@@ -53,9 +53,13 @@ const PostList = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, limit, searchParams]);
-  if (!posts || posts.page !== page) return <PostListSkeleton />;
+  console.log("posts", posts?.page);
+  console.log("page", page);
+  if (!posts || (!subjectParamQuery && posts.page !== page) || (posts.data && posts.data.length === 0)) {
+    return <PostListSkeleton />;
+  }
 
-  return posts.data.map((post, index) => (
+  return posts?.data?.map((post, index) => (
     <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
       <td className="px-6 py-4">
         <Link href={`/post/${post.id}`}>
@@ -76,14 +80,16 @@ const PostList = () => {
       </th>
       <td className="px-6 py-4">{post.likes}</td>
       <td className="px-6 py-4 text-right">
-        {post.tags.map((tag, index) => (
-          <span
-            key={index}
-            className="inline-flex mx-1 items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sky-100 text-sky-800"
-          >
-            {tag}
-          </span>
-        ))}
+        {post.tags.map((tag, index) =>
+          tag === "" ? null : (
+            <span
+              key={index}
+              className="inline-flex mx-1 items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sky-100 text-sky-800"
+            >
+              {tag}
+            </span>
+          )
+        )}
       </td>
     </tr>
   ));

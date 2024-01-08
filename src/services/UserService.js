@@ -53,28 +53,33 @@ export const deleteUser = async (userId) => {
   return res.data;
 };
 
-export const updateUser = async (userId, firstName, lastName, phone, gender, title, picture, dateOfBirth) => {
-  try {
-    const res = await axios.put(
-      `${baseUrl}/user/${userId}`,
-      {
-        title,
-        firstName,
-        lastName,
-        picture,
-        phone,
-        gender,
-        dateOfBirth,
+// prettier-ignore
+export const updateUser = async ( userId, firstName, lastName, phone, gender, title, picture, dateOfBirth, street, city, state, country, timezone ) => {
+  const res = await axios.put(
+    `${baseUrl}/user/${userId}`,
+    {
+      title,
+      firstName,
+      lastName,
+      picture,
+      phone,
+      gender,
+      dateOfBirth,
+      location: {
+        street,
+        city,
+        state,
+        country,
+        timezone,
       },
-      { headers }
-    );
-    return res.data;
-  } catch (error) {
-    console.error(error);
-  }
+    },
+    { headers }
+  );
+  return res.data;
 };
 
-export const createUser = async (firstName, lastName, email, phone, gender, title, picture, dateOfBirth) => {
+// prettier-ignore
+export const createUser = async ( firstName, lastName, email, phone, gender, title, picture, dateOfBirth, street, city, state, country, timezone ) => {
   //* firsName, lastName and email are required
   const res = await axios.post(
     `${baseUrl}/user/create`,
@@ -87,6 +92,13 @@ export const createUser = async (firstName, lastName, email, phone, gender, titl
       phone,
       gender,
       dateOfBirth,
+      location: {
+        street,
+        city,
+        state,
+        country,
+        timezone,
+      },
     },
     { headers }
   );

@@ -2,6 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 const UserDetailPostTable = ({ userPosts, userName }) => {
+  if (!userPosts || userPosts.length === 0) {
+    return null;
+  }
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-3">
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

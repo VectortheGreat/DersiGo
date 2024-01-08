@@ -9,18 +9,19 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
 import WarningModal from "./WarningModal";
 
-const UserModal = ({ userDetail }) => {
+const UserModal = ({ userDetail, onSubmitSuccess }) => {
   const warningModal = useSelector((state) => state.modal.warningModal);
   const dispatch = useDispatch();
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathName = usePathname();
   const userModalQuery = searchParams.get("userModal");
+
   const [userInfo, setUserInfo] = useState({
-    title: "",
+    title: "mr",
     firstName: "",
     lastName: "",
-    gender: "",
+    gender: "male",
     email: "",
     dateOfBirth: "",
     phone: "",
@@ -30,6 +31,7 @@ const UserModal = ({ userDetail }) => {
     country: "",
     timezone: "",
   });
+  console.log(userInfo);
   useEffect(() => {
     if (userModalQuery === "update") {
       setUserInfo((prev) => ({
@@ -39,9 +41,14 @@ const UserModal = ({ userDetail }) => {
         lastName: userDetail.lastName,
         gender: userDetail.gender,
         email: userDetail.email,
-        dateOfBirth: userDetail.dateOfBirth.split("T")[0],
+        dateOfBirth: userDetail.dateOfBirth?.split("T")[0],
         phone: userDetail.phone,
         picture: userDetail.picture,
+        street: userDetail.location?.street,
+        state: userDetail.location?.state,
+        city: userDetail.location?.city,
+        country: userDetail.location?.country,
+        timezone: userDetail.location?.timezone,
       }));
     }
   }, [userModalQuery, userDetail]);
@@ -82,7 +89,12 @@ const UserModal = ({ userDetail }) => {
           userInfo.gender,
           userInfo.title,
           userInfo.picture,
-          userInfo.dateOfBirth
+          userInfo.dateOfBirth,
+          userInfo.street,
+          userInfo.city,
+          userInfo.state,
+          userInfo.country,
+          userInfo.timezone
         );
         toast.success("The user created successfully", {
           position: "top-right",
@@ -103,7 +115,12 @@ const UserModal = ({ userDetail }) => {
           userInfo.gender,
           userInfo.title,
           userInfo.picture,
-          userInfo.dateOfBirth
+          userInfo.dateOfBirth,
+          userInfo.street,
+          userInfo.city,
+          userInfo.state,
+          userInfo.country,
+          userInfo.timezone
         );
         toast.success("The user updated successfully", {
           position: "top-right",
@@ -115,6 +132,7 @@ const UserModal = ({ userDetail }) => {
           progress: undefined,
           theme: "light",
         });
+        onSubmitSuccess();
       } else {
         throw new Error("userModalQuery is not defined");
       }
@@ -135,7 +153,6 @@ const UserModal = ({ userDetail }) => {
       });
     }
   };
-  console.log(userInfo);
   return (
     <>
       {warningModal ? (

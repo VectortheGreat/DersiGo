@@ -36,7 +36,7 @@ export const inputTypes = [
     placeholder: "Phone Number",
     label: "Phone",
     col: 2,
-    required: false,
+    required: true,
   },
   {
     type: "select",
@@ -45,8 +45,8 @@ export const inputTypes = [
     placeholder: "Gender",
     label: "Gender",
     col: 2,
-    options: ["", "Male", "Female", "Other"],
-    required: false,
+    options: ["Male", "Female", "Other"],
+    required: true,
   },
   {
     type: "select",
@@ -55,7 +55,16 @@ export const inputTypes = [
     placeholder: "Title",
     label: "Title",
     col: 2,
-    options: ["", "Mr", "Ms", "Mrs", "Miss", "Dr"],
+    options: ["Mr", "Ms", "Mrs", "Miss", "Dr"],
+    required: true,
+  },
+  {
+    type: "date",
+    name: "dateOfBirth",
+    id: "dateOfBirth",
+    placeholder: "Date",
+    label: "Birth Date",
+    col: 2,
     required: false,
   },
   {
@@ -134,7 +143,7 @@ export const postInputTypes = [
     placeholder: "Post Text",
     label: "Text",
     col: 1,
-    required: false,
+    required: true,
   },
   {
     type: "text",

@@ -7,7 +7,7 @@ const UserDetail = async ({ params, loading }) => {
   const userDetail = await fetchUser(params.id);
   return (
     <div className="sm:container mx-auto mt-8">
-      {loading ? <UserDetailSkeleton /> : <UserDetailComp userDetail={userDetail} />}
+      {loading ? <UserDetailSkeleton /> : <UserDetailComp paramsId={params.id} userDetail={userDetail} />}
     </div>
   );
 };

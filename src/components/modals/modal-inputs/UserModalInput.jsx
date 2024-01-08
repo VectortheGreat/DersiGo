@@ -1,14 +1,33 @@
 import { inputTypes } from "@/types/inputTypes";
+import { useEffect, useState } from "react";
 
 const UserModalInput = ({ onchangeFunc, userInfo, userModalQuery }) => {
+  const [values, setValues] = useState({});
+
+  useEffect(() => {
+    const updatedValues = {};
+    inputTypes.forEach((input) => {
+      if (input.name === "email" && userModalQuery === "update") {
+        updatedValues[input.name] = "";
+      } else {
+        updatedValues[input.name] = userInfo[input.name] || "";
+      }
+    });
+    setValues(updatedValues);
+  }, [userInfo, userModalQuery]);
+
   return inputTypes.map((input, index) => {
     if (input.name === "email" && userModalQuery === "update") {
       return null;
     }
+    if (userInfo[input.name] === undefined) {
+      userInfo[input.name] = "";
+    }
+
     return (
       <div key={index} className={input.col === 2 ? "col-span-2 sm:col-span-1" : "col-span-1 sm:col-span-2"}>
         <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-          {input.label}
+          {input.label} {input.required && <span className="text-rose-600">*</span>}
         </label>
         {input.type === "select" ? (
           <select
@@ -20,7 +39,7 @@ const UserModalInput = ({ onchangeFunc, userInfo, userModalQuery }) => {
           >
             {input.options.map((option, index) => (
               <option key={index} value={option.toLowerCase()}>
-                {option}
+                {input.name === "timezone" ? `GMT` : null} {option}
               </option>
             ))}
           </select>

@@ -16,6 +16,7 @@ const UserList = () => {
   const limit = useSelector((state) => state.pagination.limit);
   const searchParams = useSearchParams();
   const searchParamQuery = searchParams.get("search");
+  const subjectParamQuery = searchParams.get("subject");
   const fetchData = async () => {
     try {
       const data = await fetchUsers(page, limit);
@@ -33,7 +34,6 @@ const UserList = () => {
           user.firstName.toLowerCase().includes(searchParamQuery.toLowerCase()) ||
           user.lastName.toLowerCase().includes(searchParamQuery.toLowerCase())
       );
-
       dispatch(setLimit(50));
       dispatch(setUsers({ data: filterSearch, total: filterSearch.length }));
     } catch (error) {
@@ -50,9 +50,9 @@ const UserList = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, limit, searchParams]);
-  if (!users || users.page !== page) return <UserListSekeleton />;
+  if (!users || (!subjectParamQuery && users.page !== page)) return <UserListSekeleton />;
 
-  return users.data.map((user, index) => (
+  return users?.data?.map((user, index) => (
     <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
       <td className="px-6 py-4">
         <Link href={`/user/${user.id}`}>

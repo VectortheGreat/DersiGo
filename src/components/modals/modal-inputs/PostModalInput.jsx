@@ -27,7 +27,7 @@ const PostModalInput = ({ onchangeFunc, postInfo, postModalQuery }) => {
     return (
       <div key={index} className={input.col === 2 ? "col-span-2 sm:col-span-1" : "col-span-1 sm:col-span-2"}>
         <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-          {input.label}
+          {input.label} {input.required && <span className="text-rose-600">*</span>}
         </label>
         {input.type === "select" ? (
           <select

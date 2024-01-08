@@ -7,7 +7,7 @@ const PostDetail = async ({ params, loading }) => {
   const postDetail = await fetchPost(params.id);
   return (
     <div className="sm:container mx-auto mt-8">
-      {loading ? <PostDetailSkeleton /> : <PostDetailComp postDetail={postDetail} />}
+      {loading ? <PostDetailSkeleton /> : <PostDetailComp paramsId={params.id} postDetail={postDetail} />}
     </div>
   );
 };
