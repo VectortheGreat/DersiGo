@@ -2,8 +2,9 @@ import CaptionComp from "@/components/CaptionComp";
 import LimitComp from "@/components/paging/LimitComp";
 import PageComp from "@/components/paging/PageComp";
 import UserList from "@/components/user/UserList";
+import UserListSekeleton from "@/components/user/UserListSekeleton";
 
-const UserContainer = () => {
+const UserContainer = ({ loading }) => {
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -19,16 +20,11 @@ const UserContainer = () => {
             <th scope="col" className="px-6 py-3">
               Title
             </th>
-            <th scope="col" className="px-6 py-3">
-              <span className="sr-only">Edit</span>
-            </th>
           </tr>
         </thead>
-        <tbody>
-          <UserList />
-        </tbody>
+        <tbody>{loading ? <UserListSekeleton /> : <UserList />}</tbody>
       </table>
-      <div className="flex justify-between p-2">
+      <div className="flex justify-between p-2 bg-gray-800 bg-opacity-95">
         <LimitComp />
         <PageComp />
       </div>

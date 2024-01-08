@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import PostListSkeleton from "./PostListSkeleton";
 
 const PostList = () => {
   const dispatch = useDispatch();
@@ -52,8 +53,9 @@ const PostList = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, limit, searchParams]);
+  if (!posts || posts.page !== page) return <PostListSkeleton />;
 
-  return posts?.data?.map((post, index) => (
+  return posts.data.map((post, index) => (
     <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
       <td className="px-6 py-4">
         <Link href={`/post/${post.id}`}>

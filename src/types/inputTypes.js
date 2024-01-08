@@ -1,3 +1,6 @@
+import { countryList } from "@/utils/countryList";
+import { timezones } from "@/utils/timezones";
+
 export const inputTypes = [
   {
     type: "text",
@@ -62,6 +65,53 @@ export const inputTypes = [
     placeholder: "Picture Url",
     label: "Picture",
     col: 1,
+    required: false,
+  },
+  {
+    type: "text",
+    name: "street",
+    id: "street",
+    placeholder: "Street Location",
+    label: "Street",
+    col: 1,
+    required: false,
+  },
+  {
+    type: "text",
+    name: "city",
+    id: "city",
+    placeholder: "City Location",
+    label: "City",
+    col: 2,
+    required: false,
+  },
+  {
+    type: "text",
+    name: "state",
+    id: "state",
+    placeholder: "State Location",
+    label: "State",
+    col: 2,
+    required: false,
+  },
+  {
+    type: "select",
+    name: "country",
+    id: "country",
+    placeholder: "Country Location",
+    label: "Country",
+    options: countryList,
+    col: 2,
+    required: false,
+  },
+  {
+    type: "select",
+    name: "timezone",
+    id: "timezone",
+    options: timezones,
+    placeholder: "timezone",
+    label: "Timezone",
+    col: 2,
     required: false,
   },
 ];

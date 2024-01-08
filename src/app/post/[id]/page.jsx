@@ -1,9 +1,10 @@
 import PostDetail from "@/containers/post-detail-page/PostDetail";
 
 const PostDetailPage = ({ params }) => {
+  const loading = false;
   return (
     <div>
-      <PostDetail params={params} />
+      <PostDetail params={params} loading={loading} />
     </div>
   );
 };

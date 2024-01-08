@@ -1,8 +1,7 @@
 import UserContainer from "@/containers/user-page/UserContainer";
-import "@/app/globals.css";
 
-const UsersPage = () => {
-  const loading = false;
+const Loading = () => {
+  const loading = true;
   return (
     <div>
       <UserContainer loading={loading} />
@@ -10,4 +9,4 @@ const UsersPage = () => {
   );
 };
 
-export default UsersPage;
+export default Loading;

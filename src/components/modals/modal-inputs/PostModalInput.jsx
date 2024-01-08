@@ -1,6 +1,6 @@
 "use client";
 import { fetchAllUsers } from "@/services/UserService";
-import { postInputTypes } from "@/utils/inputTypes";
+import { postInputTypes } from "@/types/inputTypes";
 import { useEffect, useState } from "react";
 
 const PostModalInput = ({ onchangeFunc, postInfo, postModalQuery }) => {

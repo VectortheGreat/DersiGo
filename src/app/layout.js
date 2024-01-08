@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
   return (
     <StoreProvider>
       <html lang="en">
-        <body className={inter.className}>
+        <body className={`${inter.className} bg-gray-950`}>
           <Header />
           <ToastContainer />
           <main className="container mx-auto p-4">{children}</main>

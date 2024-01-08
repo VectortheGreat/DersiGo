@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 
 const Header = () => {
@@ -5,6 +6,7 @@ const Header = () => {
     { name: "Users", path: "/users" },
     { name: "Posts", path: "/posts" },
   ];
+
   return (
     <header className="bg-gray-800 text-white p-4">
       <div className="container mx-auto flex items-center justify-between">

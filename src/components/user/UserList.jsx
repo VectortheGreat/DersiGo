@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import UserListSekeleton from "./UserListSekeleton";
 
 const UserList = () => {
   const dispatch = useDispatch();
@@ -49,8 +50,9 @@ const UserList = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, limit, searchParams]);
+  if (!users || users.page !== page) return <UserListSekeleton />;
 
-  return users?.data?.map((user, index) => (
+  return users.data.map((user, index) => (
     <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
       <td className="px-6 py-4">
         <Link href={`/user/${user.id}`}>
@@ -66,9 +68,6 @@ const UserList = () => {
         </Link>
       </th>
       <td className="px-6 py-4">{user.title}</td>
-      <td className="px-6 py-4 text-right">
-        <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
-      </td>
     </tr>
   ));
 };

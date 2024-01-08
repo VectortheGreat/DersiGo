@@ -1,7 +1,7 @@
 import PostContainer from "@/containers/post-page/PostContainer";
 
-const PostsPage = () => {
-  const loading = false;
+const Loading = () => {
+  const loading = true;
   return (
     <div>
       <PostContainer loading={loading} />
@@ -9,4 +9,4 @@ const PostsPage = () => {
   );
 };
 
-export default PostsPage;
+export default Loading;

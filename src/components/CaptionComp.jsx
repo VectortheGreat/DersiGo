@@ -6,13 +6,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import PostModal from "./modals/PostModal";
+import UserModal from "./modals/UserModal";
 
 const CaptionComp = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const path = usePathname();
   const pathName = path.split("/")[1];
-  const modal = useSelector((state) => state.modal.postEditModal);
+  const postEditModal = useSelector((state) => state.modal.postEditModal);
+  const userEditModal = useSelector((state) => state.modal.userEditModal);
   const page = useSelector((state) => state.pagination.page);
   const limit = useSelector((state) => state.pagination.limit);
   const [searchSubject, setSearchSubject] = useState("tag");
@@ -33,7 +35,8 @@ const CaptionComp = () => {
 
   return (
     <div className="flex justify-between">
-      {modal && <PostModal />}
+      {postEditModal && <PostModal />}
+      {userEditModal && <UserModal />}
       <div>
         <span>All {pathName}</span>
         <p className="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">All {pathName} from Database</p>

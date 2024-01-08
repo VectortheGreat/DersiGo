@@ -4,12 +4,12 @@ import { createUser, updateUser } from "@/services/UserService";
 import { useEffect, useState } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import ModalInput from "./modal-inputs/ModalInput";
+import UserModalInput from "./modal-inputs/UserModalInput";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
 import WarningModal from "./WarningModal";
 
-const EditUserModal = ({ userDetail }) => {
+const UserModal = ({ userDetail }) => {
   const warningModal = useSelector((state) => state.modal.warningModal);
   const dispatch = useDispatch();
   const router = useRouter();
@@ -25,6 +25,10 @@ const EditUserModal = ({ userDetail }) => {
     dateOfBirth: "",
     phone: "",
     picture: "",
+    street: "",
+    city: "",
+    country: "",
+    timezone: "",
   });
   useEffect(() => {
     if (userModalQuery === "update") {
@@ -53,6 +57,10 @@ const EditUserModal = ({ userDetail }) => {
       dateOfBirth: "",
       phone: "",
       picture: "",
+      street: "",
+      city: "",
+      country: "",
+      timezone: "",
     });
     router.replace(pathName);
   };
@@ -127,6 +135,7 @@ const EditUserModal = ({ userDetail }) => {
       });
     }
   };
+  console.log(userInfo);
   return (
     <>
       {warningModal ? (
@@ -181,7 +190,7 @@ const EditUserModal = ({ userDetail }) => {
 
               <form className="p-4 md:p-5" onSubmit={(e) => submitFunc(e)}>
                 <div className="grid gap-4 mb-4 grid-cols-2">
-                  <ModalInput onchangeFunc={onchangeFunc} userInfo={userInfo} userModalQuery={userModalQuery} />
+                  <UserModalInput onchangeFunc={onchangeFunc} userInfo={userInfo} userModalQuery={userModalQuery} />
                 </div>
                 {/* <div>{message && <div className="text-rose-600">{message}</div>}</div> */}
                 <div className="col-span-2 flex justify-center">
@@ -213,4 +222,4 @@ const EditUserModal = ({ userDetail }) => {
   );
 };
 
-export default EditUserModal;
+export default UserModal;

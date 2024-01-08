@@ -1,6 +1,6 @@
-import { inputTypes } from "@/utils/inputTypes";
+import { inputTypes } from "@/types/inputTypes";
 
-const ModalInput = ({ onchangeFunc, userInfo, userModalQuery }) => {
+const UserModalInput = ({ onchangeFunc, userInfo, userModalQuery }) => {
   return inputTypes.map((input, index) => {
     if (input.name === "email" && userModalQuery === "update") {
       return null;
@@ -41,4 +41,4 @@ const ModalInput = ({ onchangeFunc, userInfo, userModalQuery }) => {
   });
 };
 
-export default ModalInput;
+export default UserModalInput;
