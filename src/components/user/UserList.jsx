@@ -11,12 +11,15 @@ import UserListSekeleton from "./UserListSekeleton";
 
 const UserList = () => {
   const dispatch = useDispatch();
-  const users = useSelector((state) => state.user.users);
-  const page = useSelector((state) => state.pagination.page);
-  const limit = useSelector((state) => state.pagination.limit);
   const searchParams = useSearchParams();
   const searchParamQuery = searchParams.get("search");
   const subjectParamQuery = searchParams.get("subject");
+
+  //* States
+  const users = useSelector((state) => state.user.users);
+  const page = useSelector((state) => state.pagination.page);
+  const limit = useSelector((state) => state.pagination.limit);
+
   const fetchData = async () => {
     try {
       const data = await fetchUsers(page, limit);
@@ -26,6 +29,7 @@ const UserList = () => {
       throw error;
     }
   };
+
   const fetchAllUserData = async () => {
     try {
       const data = await fetchAllUsers();
@@ -50,6 +54,7 @@ const UserList = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, limit, searchParams]);
+
   if (!users || (!subjectParamQuery && users.page !== page)) return <UserListSekeleton />;
 
   return users?.data?.map((user, index) => (

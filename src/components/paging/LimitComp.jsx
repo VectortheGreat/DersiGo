@@ -7,10 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 const LimitComp = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const page = useSelector((state) => state.pagination.page);
-  const limit = useSelector((state) => state.pagination.limit);
   const searchParams = useSearchParams();
   const searchQueryParams = searchParams.get("search");
+
+  const limit = useSelector((state) => state.pagination.limit);
+  const page = useSelector((state) => state.pagination.page);
 
   const changeLimit = (e) => {
     dispatch(setLimit(e.target.value));
@@ -25,6 +26,7 @@ const LimitComp = () => {
   }, [limit, page, router, searchQueryParams]);
 
   if (searchQueryParams) {
+    //* We don't need limit for search
     return <div></div>;
   }
 

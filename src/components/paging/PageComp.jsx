@@ -9,10 +9,13 @@ const PageComp = () => {
   const dispatch = useDispatch();
   const searchParams = useSearchParams();
   const path = usePathname();
+
   const pathName = path.split("/")[1];
   const searchQueryParams = searchParams.get("search");
   const subjectQueryParams = searchParams.get("subject");
   const pageParams = searchParams.get("page");
+
+  //* States
   const page = useSelector((state) => state.pagination.page);
   const limit = useSelector((state) => state.pagination.limit);
   const users = useSelector((state) => state.user.users);
@@ -29,6 +32,7 @@ const PageComp = () => {
       setLastPageQuery(page + 1 - maxPage);
     }
   }, [pathName, posts, users]);
+
   const changePage = (e) => {
     if (e.target.getAttribute("name") === "number") {
       dispatch(selectPageValue(e.target.textContent));
@@ -41,6 +45,7 @@ const PageComp = () => {
     }
   };
 
+  //* Limit the number of pages to show
   const pages = [];
   const maxPagesToShow = 5;
   const start = Math.max(1, page - Math.floor(maxPagesToShow / 2));

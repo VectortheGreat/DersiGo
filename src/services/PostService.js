@@ -54,6 +54,7 @@ export const fetchPostByUser = async (userId, limit = 50) => {
 };
 
 export const fetchAllPosts = async (limit = 50) => {
+  //! This is not a good way to fetch all posts, but the API doesn't support it. I can't think of a better way to do it in Frontend side.
   try {
     let allPosts = [];
     let page = 0;

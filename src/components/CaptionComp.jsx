@@ -13,11 +13,15 @@ const CaptionComp = () => {
   const router = useRouter();
   const path = usePathname();
   const pathName = path.split("/")[1];
+
+  //* States
   const postEditModal = useSelector((state) => state.modal.postEditModal);
   const userEditModal = useSelector((state) => state.modal.userEditModal);
   const page = useSelector((state) => state.pagination.page);
   const limit = useSelector((state) => state.pagination.limit);
   const [searchSubject, setSearchSubject] = useState("tag");
+  const [searchInput, setSearchInput] = useState("");
+
   const openModal = () => {
     if (pathName === "users") {
       dispatch(toggleUserEditModal());
@@ -27,7 +31,7 @@ const CaptionComp = () => {
       router.push("?postModal=create");
     }
   };
-  const [searchInput, setSearchInput] = useState("");
+
   const submitSearch = (e) => {
     e.preventDefault();
     router.push(`?page=${page + 1}&limit=${limit}&search=${searchInput}&subject=${searchSubject}`, { scroll: false });

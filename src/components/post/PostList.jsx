@@ -11,12 +11,15 @@ import PostListSkeleton from "./PostListSkeleton";
 
 const PostList = () => {
   const dispatch = useDispatch();
-  const posts = useSelector((state) => state.post.posts);
-  const page = useSelector((state) => state.pagination.page);
-  const limit = useSelector((state) => state.pagination.limit);
   const searchParams = useSearchParams();
   const searchParamQuery = searchParams.get("search");
   const subjectParamQuery = searchParams.get("subject");
+
+  //* States
+  const posts = useSelector((state) => state.post.posts);
+  const page = useSelector((state) => state.pagination.page);
+  const limit = useSelector((state) => state.pagination.limit);
+
   const fetchData = async () => {
     try {
       const data = await fetchPosts(page, limit);
@@ -26,6 +29,7 @@ const PostList = () => {
       throw error;
     }
   };
+
   const fetchAllPostData = async () => {
     try {
       if (subjectParamQuery === "post") {
@@ -53,8 +57,7 @@ const PostList = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, limit, searchParams]);
-  console.log("posts", posts?.page);
-  console.log("page", page);
+
   if (!posts || (!subjectParamQuery && posts.page !== page) || (posts.data && posts.data.length === 0)) {
     return <PostListSkeleton />;
   }

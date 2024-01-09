@@ -80,7 +80,7 @@ export const inputTypes = [
     type: "text",
     name: "street",
     id: "street",
-    placeholder: "Street Location",
+    placeholder: "Street is required if you want to add a location",
     label: "Street",
     col: 1,
     required: false,

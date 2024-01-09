@@ -10,13 +10,14 @@ import { toast } from "react-toastify";
 import WarningModal from "./WarningModal";
 
 const UserModal = ({ userDetail, onSubmitSuccess }) => {
-  const warningModal = useSelector((state) => state.modal.warningModal);
   const dispatch = useDispatch();
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathName = usePathname();
   const userModalQuery = searchParams.get("userModal");
 
+  //* States
+  const warningModal = useSelector((state) => state.modal.warningModal);
   const [userInfo, setUserInfo] = useState({
     title: "mr",
     firstName: "",
@@ -31,7 +32,7 @@ const UserModal = ({ userDetail, onSubmitSuccess }) => {
     country: "",
     timezone: "",
   });
-  console.log(userInfo);
+
   useEffect(() => {
     if (userModalQuery === "update") {
       setUserInfo((prev) => ({
@@ -209,7 +210,6 @@ const UserModal = ({ userDetail, onSubmitSuccess }) => {
                 <div className="grid gap-4 mb-4 grid-cols-2">
                   <UserModalInput onchangeFunc={onchangeFunc} userInfo={userInfo} userModalQuery={userModalQuery} />
                 </div>
-                {/* <div>{message && <div className="text-rose-600">{message}</div>}</div> */}
                 <div className="col-span-2 flex justify-center">
                   <button
                     type="submit"

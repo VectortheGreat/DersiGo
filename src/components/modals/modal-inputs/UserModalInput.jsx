@@ -18,6 +18,7 @@ const UserModalInput = ({ onchangeFunc, userInfo, userModalQuery }) => {
 
   return inputTypes.map((input, index) => {
     if (input.name === "email" && userModalQuery === "update") {
+      //* We don't want to show the email input when updating a user because email is forbidden to be updated
       return null;
     }
     if (userInfo[input.name] === undefined) {
@@ -30,6 +31,7 @@ const UserModalInput = ({ onchangeFunc, userInfo, userModalQuery }) => {
           {input.label} {input.required && <span className="text-rose-600">*</span>}
         </label>
         {input.type === "select" ? (
+          //* Only select inputs
           <select
             name={input.name}
             id={input.id}
@@ -44,6 +46,7 @@ const UserModalInput = ({ onchangeFunc, userInfo, userModalQuery }) => {
             ))}
           </select>
         ) : (
+          //* Other than select inputs
           <input
             type={input.type}
             name={input.name}

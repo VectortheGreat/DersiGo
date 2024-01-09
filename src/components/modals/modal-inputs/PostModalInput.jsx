@@ -29,7 +29,9 @@ const PostModalInput = ({ onchangeFunc, postInfo, postModalQuery }) => {
         <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
           {input.label} {input.required && <span className="text-rose-600">*</span>}
         </label>
+
         {input.type === "select" ? (
+          //* Only select inputs
           <select
             name={input.name}
             id={input.id}
@@ -44,6 +46,7 @@ const PostModalInput = ({ onchangeFunc, postInfo, postModalQuery }) => {
             ))}
           </select>
         ) : (
+          //* Other than select inputs
           <input
             type={input.type}
             name={input.name}

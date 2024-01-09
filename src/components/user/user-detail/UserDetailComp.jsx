@@ -13,12 +13,14 @@ import { fetchUser } from "@/services/UserService";
 
 const UserDetailComp = ({ paramsId }) => {
   const dispatch = useDispatch();
-  const modal = useSelector((state) => state.modal.userEditModal);
   const router = useRouter();
+
+  //* States
   const [userPosts, setUserPosts] = useState([]);
   const [showSkeleton, setShowSkeleton] = useState(true);
   const [userDetail, setUserDetail] = useState({});
   const [triggerFetchUserDetail, setTriggerFetchUserDetail] = useState(false);
+  const modal = useSelector((state) => state.modal.userEditModal);
 
   const openModal = () => {
     dispatch(toggleUserEditModal());
@@ -58,7 +60,6 @@ const UserDetailComp = ({ paramsId }) => {
     }, 1000);
     return () => clearTimeout(timer);
   }, []);
-  console.log(userDetail);
   return (
     <>
       <div className="flex flex-col lg:flex-row text-white bg-gray-800 rounded-md p-6">
@@ -82,6 +83,8 @@ const UserDetailComp = ({ paramsId }) => {
             />
           )}
         </div>
+
+        {/* User Detail Body */}
         <div className="lg:flex flex-col justify-center px-4 lg:ml-8 lg:w-full mt-4 lg:mt-0">
           <div className="lg:flex justify-between items-center mb-3">
             <h2 className="text-4xl lg:text-5xl font-bold mb-4">

@@ -10,28 +10,35 @@ import { fetchPost } from "@/services/PostService";
 
 const PostDetailComp = ({ paramsId }) => {
   const dispatch = useDispatch();
-  const modal = useSelector((state) => state.modal.postEditModal);
-  const [postDetail, setPostDetail] = useState({});
+  const router = useRouter();
   const publishDate = postDetail?.publishDate?.split("T")[0];
   const publishHour = postDetail?.publishDate?.split("T")[1].split(".")[0];
+
+  //* States
+  const [postDetail, setPostDetail] = useState({});
   const [triggerFetchUserDetail, setTriggerFetchUserDetail] = useState(false);
-  const router = useRouter();
+  const modal = useSelector((state) => state.modal.postEditModal);
+
   const openModal = () => {
     dispatch(togglePostEditModal());
     router.push("?postModal=update");
   };
+
   const onSubmitSuccess = () => {
     setTriggerFetchUserDetail(true);
   };
+
   const fetchPostDetail = async () => {
     const data = await fetchPost(paramsId);
     setPostDetail(data);
   };
+
   useEffect(() => {
     fetchPostDetail();
     setTriggerFetchUserDetail(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [triggerFetchUserDetail]);
+
   return (
     <div className=" flex-col lg:flex-row text-white">
       {modal && <PostModal postDetail={postDetail} onSubmitSuccess={onSubmitSuccess} />}

@@ -9,11 +9,13 @@ import PostModalInput from "./modal-inputs/PostModalInput";
 import { toast } from "react-toastify";
 
 const PostModal = ({ postDetail, onSubmitSuccess }) => {
-  const warningModal = useSelector((state) => state.modal.warningModal);
   const dispatch = useDispatch();
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathName = usePathname();
+
+  //*States
+  const warningModal = useSelector((state) => state.modal.warningModal);
   const postModalQuery = searchParams.get("postModal");
   const [postInfo, setPostInfo] = useState({
     image: "",
@@ -22,6 +24,7 @@ const PostModal = ({ postDetail, onSubmitSuccess }) => {
     text: "",
     tags: "",
   });
+
   useEffect(() => {
     if (postModalQuery === "update") {
       setPostInfo((prev) => ({
@@ -167,7 +170,6 @@ const PostModal = ({ postDetail, onSubmitSuccess }) => {
                 <div className="grid gap-4 mb-4 grid-cols-2">
                   <PostModalInput onchangeFunc={onchangeFunc} postInfo={postInfo} postModalQuery={postModalQuery} />
                 </div>
-                {/* <div>{message && <div className="text-rose-600">{message}</div>}</div> */}
                 <div className="col-span-2 flex justify-center">
                   <button
                     type="submit"
