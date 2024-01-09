@@ -11,14 +11,14 @@ import { fetchPost } from "@/services/PostService";
 const PostDetailComp = ({ paramsId }) => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const publishDate = postDetail?.publishDate?.split("T")[0];
-  const publishHour = postDetail?.publishDate?.split("T")[1].split(".")[0];
 
   //* States
   const [postDetail, setPostDetail] = useState({});
   const [triggerFetchUserDetail, setTriggerFetchUserDetail] = useState(false);
   const modal = useSelector((state) => state.modal.postEditModal);
 
+  const publishDate = postDetail?.publishDate?.split("T")[0];
+  const publishHour = postDetail?.publishDate?.split("T")[1].split(".")[0];
   const openModal = () => {
     dispatch(togglePostEditModal());
     router.push("?postModal=update");
